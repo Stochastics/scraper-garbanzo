@@ -15,6 +15,20 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+If you are using macOS with `pip3`, use:
+```bash
+python3 -m venv .venv
+source .venv/bin/activate
+pip3 install -r requirements.txt
+```
+
+### Common install mistake
+If you run `pip install requirements.txt` (without `-r`), pip tries to install a package literally named `requirements.txt` and fails.
+Always include `-r`:
+```bash
+pip install -r requirements.txt
+```
+
 ## Configure sources
 Edit `configs/run_config.yaml`:
 - Enable/disable sources in `sources.*.enabled`
