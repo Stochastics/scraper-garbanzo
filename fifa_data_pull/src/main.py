@@ -1,12 +1,12 @@
+import os
 import argparse
 import logging
-import os
 from dotenv import load_dotenv
 import pandas as pd
 
 from config import load_config, flatten_keywords
 from normalize import normalize_record, now_utc_iso
-from storage import save_records
+from storage import save_records, ensure_output_dir
 from collectors.gdelt import collect_gdelt
 from collectors.web_scraper import collect_web_pages
 from collectors.youtube import collect_youtube
@@ -57,7 +57,8 @@ def main() -> None:
         "twitter": [],
     }
     scrape_activity = []
-    activity_path = "output/scrape_activity.csv"
+    output_path = cfg.get("output", {}).get("path", "output/results.csv")
+    activity_path = os.path.join(os.path.dirname(output_path) or "output", "scrape_activity.csv")
     resume_enabled = cfg.get("output", {}).get("resume_from_activity_log", True)
 
     completed = {"gdelt": set(), "web_scraper": set()}
@@ -117,10 +118,8 @@ def main() -> None:
         if save_source_files:
             save_records(f"output/{source_name}_results.csv", normalized)
 
-    output_path = cfg.get("output", {}).get("path", "output/results.csv")
     save_records(output_path, combined)
     if scrape_activity:
-        from storage import ensure_output_dir
         ensure_output_dir(activity_path)
         new_rows = pd.DataFrame(stamp_scrape_log(scrape_activity))
         if os.path.exists(activity_path):

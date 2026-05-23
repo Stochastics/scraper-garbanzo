@@ -64,7 +64,7 @@ Historical X/Twitter collection may require paid API full-archive access. This v
 - `raw_metadata`: JSON blob with source-specific metadata
 
 ## Scrape activity tracking
-- Each run also writes `output/scrape_activity.csv` to show where collection ran and whether each target succeeded.
+- Each run also writes `scrape_activity.csv` in the same folder as your configured output CSV (for default config: `output/scrape_activity.csv`).
 - For web scraping, it logs each URL attempted and matched keyword count.
 - For GDELT, it logs each keyword + time-window query and how many articles were returned.
 - Resume behavior: by default (`output.resume_from_activity_log: true`), a new run will skip previously successful GDELT keyword-window queries and previously successful scraped URLs.
