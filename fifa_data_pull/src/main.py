@@ -58,7 +58,8 @@ def main() -> None:
     }
     scrape_activity = []
     output_path = cfg.get("output", {}).get("path", "output/results.csv")
-    activity_path = os.path.join(os.path.dirname(output_path) or "output", "scrape_activity.csv")
+    output_dir = os.path.dirname(output_path) or "output"
+    activity_path = os.path.join(output_dir, "scrape_activity.csv")
     resume_enabled = cfg.get("output", {}).get("resume_from_activity_log", True)
 
     completed = {"gdelt": set(), "web_scraper": set()}
@@ -116,7 +117,7 @@ def main() -> None:
         normalized = [normalize_record(x) for x in stamped]
         combined.extend(normalized)
         if save_source_files:
-            save_records(f"output/{source_name}_results.csv", normalized)
+            save_records(os.path.join(output_dir, f"{source_name}_results.csv"), normalized)
 
     save_records(output_path, combined)
     if scrape_activity:
